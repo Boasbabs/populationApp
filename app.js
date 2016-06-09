@@ -22,7 +22,7 @@ var populationApp = angular.module("populationApp", ["ngRoute", "ngResource"])
 })
 
 //CONTROLLER
-.controller("mainController", ["$scope", "$resource", "countryService", function ($scope, $resource, countryService) {
+.controller("mainController", ["$scope", "$resource", "$location", "countryService", function ($scope, $resource, $location, countryService) {
 
 	$scope.$watch("country", function () {
 		countryService.country = $scope.country;
@@ -35,8 +35,10 @@ var populationApp = angular.module("populationApp", ["ngRoute", "ngResource"])
 	};
 }])
 
-.controller("populationController", ["$scope", "$location", "countryService", function ($scope, $resource, countryService) {
+.controller("populationController", ["$scope","$resource", "$location", "countryService", function ($scope, $resource, $location, countryService) {
 	$scope.country = countryService.country;
-	
-	
+	$scope.year = countryService.year;
+	$scope.populationAPI = $resource('http://api.census.gov/data/timeseries/idb/1year?get=AREA_KM2,NAME,AGE,POP&SEX=0&key=dc40f5cc7c6380307039288db3f8771fe139956c');
+	$scope.populationResponse = $scope.populationAPI.get({FIPS:$scope.country, time:$scope.year});
+	console.log($scope.populationResponse);
 }]);
