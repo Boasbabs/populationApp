@@ -22,19 +22,21 @@ var populationApp = angular.module("populationApp", ["ngRoute", "ngResource"])
 })
 
 //CONTROLLER
-.controller("mainController", ["$scope", "$location", "countryService", function ($scope, $location, countryService) {
-	$scope.country = "india";
-	$scope.year = "2014";
+.controller("mainController", ["$scope", "$resource", "countryService", function ($scope, $resource, countryService) {
 
 	$scope.$watch("country", function () {
-		countryService.city = $scope.country;
+		countryService.country = $scope.country;
+	});
+	$scope.$watch("year", function () {
+		countryService.year = $scope.year;
 	});
 	$scope.submit = function() {
 		$location.path("/population");
 	};
 }])
 
-.controller("populationController", ["$scope", "$location", "countryService", function ($scope, $location, countryService) {
+.controller("populationController", ["$scope", "$location", "countryService", function ($scope, $resource, countryService) {
+	$scope.country = countryService.country;
 	
 	
 }]);
